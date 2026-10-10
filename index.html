@@ -213,7 +213,7 @@
 
   // Private work: shown without links. Names and descriptions are chosen for display.
   const privateRepos = [
-    { name: "printability-engine", display: "PorchPrint", private: true, language: "Svelte", updated: "2026-10-05", description: "Peer-to-peer 3D printing marketplace." },
+    { name: "printability-engine", url= "https://porchprint.com", display: "PorchPrint", private: true, language: "Svelte", updated: "2026-10-05", description: "Peer-to-peer 3D printing marketplace." },
     { name: "af-fitness-sveltekit", display: "AF Fitness (SvelteKit)", private: true, language: "Svelte", updated: "2026-02-13", description: "Gamified fitness app, SvelteKit build." },
     { name: "af-fitness-app", display: "AF Fitness", private: true, language: "TypeScript", updated: "2026-01-25", description: "Gamified fitness app." },
     { name: "af-connect", display: "AF Connect", private: true, language: "TypeScript", updated: "2025-09-08" }
@@ -260,7 +260,7 @@
     const label = r.display || r.name;
     const letter = label.charAt(0).toUpperCase();
     const tag = r.private ? "div" : "a";
-    const attrs = r.private ? "" : ` href="${esc(r.url)}" target="_blank" rel="noopener"`;
+    const attrs = r.private && !r.url ? "" : ` href="${esc(r.url)}" target="_blank" rel="noopener"`;
     const badge = r.private
       ? `<span class="fork-badge">Private</span>`
       : (r.fork ? `<span class="fork-badge">Fork</span>` : "");
