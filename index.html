@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adam Nord · Projects</title>
+<style>
+  :root {
+    --paper: #f5f2ec;
+    --ink: #161a22;
+    --muted: #6b6f7a;
+    --line: #dcd7cc;
+    --card: #ffffff;
+    --accent: #e4572e;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0e1015;
+      --ink: #eceef3;
+      --muted: #8d93a0;
+      --line: #262b36;
+      --card: #161a22;
+      --accent: #ff7a52;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #0e1015;
+    --ink: #eceef3;
+    --muted: #8d93a0;
+    --line: #262b36;
+    --card: #161a22;
+    --accent: #ff7a52;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.5 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px 80px; }
+
+  /* Hero */
+  .hero { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin: 0 0 16px;
+  }
+  h1 {
+    margin: 0; font-size: clamp(2.6rem, 7vw, 5rem);
+    line-height: 0.95; letter-spacing: -0.035em; font-weight: 700;
+  }
+  .lede { margin: 20px 0 0; max-width: 560px; color: var(--muted); font-size: 1.1rem; }
+  .hero-foot {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    gap: 24px; flex-wrap: wrap; margin-top: 36px;
+  }
+  .hero-links { display: flex; gap: 20px; }
+  .hero-links a {
+    color: var(--ink); text-decoration: none; font-weight: 500;
+    border-bottom: 2px solid var(--accent); padding-bottom: 2px;
+  }
+
+  /* Filters */
+  .filters {
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  }
+  .filters .label { color: var(--muted); font-size: 0.85rem; margin-right: 6px; }
+  .chip {
+    font: inherit; font-size: 0.88rem; cursor: pointer;
+    padding: 6px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: transparent; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--muted)); }
+  .chip .n { color: var(--muted); font-size: 0.8rem; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip[aria-pressed="true"] .n { color: var(--paper); opacity: 0.7; }
+  .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Gallery */
+  .gallery {
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 20px; margin-top: 32px;
+  }
+  .tile {
+    grid-column: span 4;
+    display: flex; flex-direction: column;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    overflow: hidden; text-decoration: none; color: inherit;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .tile:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -18px rgba(0,0,0,.35); }
+  .tile:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .tile:nth-child(1) { grid-column: span 8; }
+  .tile:nth-child(1) .art { aspect-ratio: 16 / 8; }
+  .tile:nth-child(1) .mono { font-size: 9rem; }
+
+  .art {
+    position: relative; aspect-ratio: 16 / 10;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,.22) 1px, transparent 0) 0 0 / 18px 18px,
+      linear-gradient(135deg, var(--c) 0%, color-mix(in srgb, var(--c) 45%, #000) 100%);
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    padding: 18px 20px;
+  }
+  .mono {
+    font-size: 6rem; font-weight: 800; line-height: 1; letter-spacing: -0.05em;
+    color: rgba(255,255,255,.92); user-select: none;
+    text-shadow: 0 2px 20px rgba(0,0,0,.15);
+  }
+  .fork-badge {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    background: rgba(0,0,0,.28); color: #fff; padding: 4px 9px; border-radius: 999px;
+  }
+
+  .info { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .info h2 {
+    margin: 0; font-size: 1.12rem; font-weight: 650; letter-spacing: -0.01em; word-break: break-word;
+  }
+  .info p { margin: 0; color: var(--muted); font-size: 0.93rem; }
+  .meta {
+    margin-top: auto; padding-top: 10px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    font-size: 0.8rem; color: var(--muted);
+  }
+  .lang { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-weight: 500; }
+  .lang::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .sep { opacity: .5; }
+
+  .tile[hidden] { display: none; }
+  .tile.private { cursor: default; }
+  .tile.private:hover { box-shadow: none; }
+
+  footer {
+    margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 0.85rem;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .tile, .tile:nth-child(1) { grid-column: span 6; }
+    .tile:nth-child(1) .mono { font-size: 6rem; }
+  }
+  @media (max-width: 580px) {
+    .wrap { padding: 0 16px 64px; }
+    .hero { padding: 48px 0 28px; }
+    .gallery { grid-template-columns: 1fr; gap: 16px; }
+    .tile, .tile:nth-child(1) { grid-column: span 1; }
+    .tile:nth-child(1) .art { aspect-ratio: 16 / 10; }
+    .filters { position: static; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tile { transition: none; }
+    .tile:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Software Engineer</p>
+    <h1>Adam Nord</h1>
+    <p class="lede">A collection of the things I've built, from web and mobile apps to printer tooling and small experiments.</p>
+    <div class="hero-foot">
+      <div class="hero-links">
+        <a href="https://github.com/damnordicus">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="filters" id="filters" aria-label="Filter by language"></nav>
+
+  <main class="gallery" id="gallery"></main>
+
+  <footer>
+    <span id="total"></span>
+    <span>Repository data from GitHub</span>
+  </footer>
+</div>
+
+<script>
+  const publicRepos = [
+    { name: "calendar-tasks", url: "https://github.com/damnordicus/calendar-tasks", language: "Svelte", updated: "2026-05-03" },
+    { name: "tasker-app", url: "https://github.com/damnordicus/tasker-app", language: "Svelte", updated: "2026-03-24" },
+    { name: "rideshare-driver", url: "https://github.com/damnordicus/rideshare-driver", language: "TypeScript", updated: "2026-02-21" },
+    { name: "printer-log-app", url: "https://github.com/damnordicus/printer-log-app", language: "TypeScript", updated: "2026-02-10" },
+    { name: "connect-web-app", url: "https://github.com/damnordicus/connect-web-app", language: "TypeScript", updated: "2026-01-14" },
+    { name: "ConnectApp", url: "https://github.com/damnordicus/ConnectApp", language: "Kotlin", updated: "2025-12-17" },
+    { name: "conference-room-display", url: "https://github.com/damnordicus/conference-room-display", language: "Python", updated: "2025-07-08" },
+    { name: "prusa-post-process-go", url: "https://github.com/damnordicus/prusa-post-process-go", language: "Go", updated: "2025-07-02", description: "Post-processing program for a filament inventory manager, written in Go." },
+    { name: "print-service", url: "https://github.com/damnordicus/print-service", language: "TypeScript", updated: "2025-06-01" },
+    { name: "clock-app", url: "https://github.com/damnordicus/clock-app", language: "TypeScript", updated: "2025-05-13" },
+    { name: "table-app", url: "https://github.com/damnordicus/table-app", language: "TypeScript", updated: "2025-04-28" },
+    { name: "weekly-task-log", url: "https://github.com/damnordicus/weekly-task-log", language: "HTML", updated: "2025-04-14" },
+    { name: "fancyTodo", url: "https://github.com/damnordicus/fancyTodo", language: "JavaScript", updated: "2024-08-29" },
+    { name: "phoenix-spark-home", url: "https://github.com/damnordicus/phoenix-spark-home", language: null, updated: "2024-08-06" },
+    { name: "Please-Contain-Yourself", url: "https://github.com/damnordicus/Please-Contain-Yourself", language: null, updated: "2024-07-01", fork: true, description: "A Docker tutorial written for people who don't actually know Docker already." },
+    { name: "sql-practice", url: "https://github.com/damnordicus/sql-practice", language: "JavaScript", updated: "2024-06-27" }
+  ];
+
+  // Private work: shown without links. Names and descriptions are chosen for display.
+  const privateRepos = [
+    { name: "printability-engine", display: "PorchPrint", private: true, language: "Svelte", updated: "2026-10-05", description: "Peer-to-peer 3D printing marketplace." },
+    { name: "af-fitness-sveltekit", display: "AF Fitness (SvelteKit)", private: true, language: "Svelte", updated: "2026-02-13", description: "Gamified fitness app, SvelteKit build." },
+    { name: "af-fitness-app", display: "AF Fitness", private: true, language: "TypeScript", updated: "2026-01-25", description: "Gamified fitness app." },
+    { name: "af-connect", display: "AF Connect", private: true, language: "TypeScript", updated: "2025-09-08" }
+  ];
+
+  const repos = [...publicRepos, ...privateRepos]
+    .sort((a, b) => b.updated.localeCompare(a.updated));
+
+  // Language colors (brand-ish hues), with a neutral fallback
+  const LANG_COLORS = {
+    "TypeScript": "#3178c6",
+    "JavaScript": "#c99a06",
+    "Svelte": "#ff3e00",
+    "Python": "#3572a5",
+    "Go": "#00a7c4",
+    "Kotlin": "#8f5cf7",
+    "HTML": "#e34c26",
+    "Other": "#7b8190"
+  };
+
+  const langOf = r => r.language || "Other";
+  const colorOf = lang => LANG_COLORS[lang] || "#7b8190";
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  // Build language list with counts, sorted by count
+  const counts = {};
+  repos.forEach(r => { const l = langOf(r); counts[l] = (counts[l] || 0) + 1; });
+  const langs = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+
+  // Filter bar
+  const filters = document.getElementById("filters");
+  const allBtn = (active) => `<span class="label">Filter</span>` +
+    `<button class="chip" data-lang="__all" aria-pressed="${active}">All <span class="n">${repos.length}</span></button>`;
+  filters.innerHTML = allBtn(true) + langs.map(l =>
+    `<button class="chip" data-lang="${esc(l)}" style="--c:${colorOf(l)}" aria-pressed="false">` +
+    `<span class="dot"></span>${esc(l)} <span class="n">${counts[l]}</span></button>`
+  ).join("");
+
+  // Gallery tiles
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = repos.map(r => {
+    const lang = langOf(r);
+    const c = colorOf(lang);
+    const label = r.display || r.name;
+    const letter = label.charAt(0).toUpperCase();
+    const tag = r.private ? "div" : "a";
+    const attrs = r.private ? "" : ` href="${esc(r.url)}" target="_blank" rel="noopener"`;
+    const badge = r.private
+      ? `<span class="fork-badge">Private</span>`
+      : (r.fork ? `<span class="fork-badge">Fork</span>` : "");
+    const meta = r.private
+      ? (r.language ? `<span class="lang">${esc(r.language)}</span>` : "")
+      : `${r.language ? `<span class="lang">${esc(r.language)}</span><span class="sep">·</span>` : ""}<span>Updated ${esc(r.updated)}</span>`;
+    return `
+      <${tag} class="tile${r.private ? " private" : ""}"${attrs} data-lang="${esc(lang)}" style="--c:${c}">
+        <div class="art">
+          <span class="mono" aria-hidden="true">${esc(letter)}</span>
+          ${badge}
+        </div>
+        <div class="info">
+          <h2>${esc(label)}</h2>
+          ${r.description ? `<p>${esc(r.description)}</p>` : ""}
+          <div class="meta">${meta}</div>
+        </div>
+      </${tag}>`;
+  }).join("");
+
+  const tiles = [...gallery.querySelectorAll(".tile")];
+  const total = document.getElementById("total");
+
+  function applyFilter(lang) {
+    let shown = 0;
+    tiles.forEach(t => {
+      const match = lang === "__all" || t.dataset.lang === lang;
+      t.hidden = !match;
+      if (match) shown++;
+    });
+    const privateCount = privateRepos.length;
+    total.textContent = lang === "__all"
+      ? `${repos.length} repositories, ${privateCount} private`
+      : `${shown} of ${repos.length} repositories`;
+    filters.querySelectorAll(".chip").forEach(b =>
+      b.setAttribute("aria-pressed", String(b.dataset.lang === lang))
+    );
+  }
+
+  filters.addEventListener("click", e => {
+    const btn = e.target.closest(".chip");
+    if (btn) applyFilter(btn.dataset.lang);
+  });
+
+  applyFilter("__all");
+</script>
+</body>
+</html>
