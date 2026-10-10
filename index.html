@@ -259,16 +259,17 @@
     const c = colorOf(lang);
     const label = r.display || r.name;
     const letter = label.charAt(0).toUpperCase();
-    const tag = r.private ? "div" : "a";
-    const attrs = r.private && !r.url ? "" : ` href="${esc(r.url)}" target="_blank" rel="noopener"`;
+    const linked = !!r.url;
+    const tag = linked ? "a" : "div";
+    const attrs = linked ? ` href="${esc(r.url)}" target="_blank" rel="noopener"` : "";
     const badge = r.private
-      ? `<span class="fork-badge">Private</span>`
+      ? `<span class="fork-badge">${linked ? "Live" : "Private"}</span>`
       : (r.fork ? `<span class="fork-badge">Fork</span>` : "");
     const meta = r.private
       ? (r.language ? `<span class="lang">${esc(r.language)}</span>` : "")
       : `${r.language ? `<span class="lang">${esc(r.language)}</span><span class="sep">·</span>` : ""}<span>Updated ${esc(r.updated)}</span>`;
     return `
-      <${tag} class="tile${r.private ? " private" : ""}"${attrs} data-lang="${esc(lang)}" style="--c:${c}">
+      <${tag} class="tile${r.private && !linked ? " private" : ""}"${attrs} data-lang="${esc(lang)}" style="--c:${c}">
         <div class="art">
           <span class="mono" aria-hidden="true">${esc(letter)}</span>
           ${badge}
