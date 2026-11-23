@@ -115,6 +115,11 @@
     .frame { box-shadow: none; }
     .showcase { break-inside: avoid; }
   }
+  .shots.two { grid-template-columns: repeat(2, 1fr); }
+  .frame.wide { aspect-ratio: 1599 / 855; border-radius: 16px; box-shadow: 0 24px 50px -32px rgba(0,0,0,.5); }
+  @media (max-width: 760px) {
+    .shots.two { grid-auto-columns: 86%; }
+  }
 </style>
 </head>
 <body>
@@ -213,6 +218,46 @@
       <figure>
         <div class="frame"><img src="assets/otr/add-discrepancy.png" alt="Form for adding a discrepancy with title, description, and severity"></div>
         <figcaption>Logging a discrepancy</figcaption>
+      </figure>
+    </div>
+  </article>
+
+  <article class="showcase">
+    <div class="showcase-head">
+      <h2>PorchPrint</h2>
+      <span class="platform">Web app · Live since Oct 2026 · Private repository</span>
+    </div>
+
+    <div class="langs">
+      <span class="lang primary">TypeScript</span>
+      <span class="lang">Svelte</span>
+      <span class="lang">Python</span>
+      <span class="lang">FastAPI</span>
+      <span class="lang">Drizzle ORM</span>
+      <span class="lang">Stripe</span>
+    </div>
+
+    <p class="desc">
+      A peer-to-peer 3D printing marketplace that connects people who need a part printed with volunteer
+      printer owners nearby. Customers upload a model (STL, 3MF, or a zipped project archive), choose a
+      material and detail level, and get an instant estimate before posting the job for printers to quote.
+    </p>
+    <p class="desc">
+      The backend analyzes each model with PrusaSlicer CLI and trimesh, with bounded concurrency so many
+      uploads can run at once. Customers see market price ranges instead of raw material costs. Each job
+      moves through posting, quote acceptance, printing, and delivery, and the printer's payout is sent once
+      delivery is confirmed. Payments run through Stripe, and the app is deployed with Docker Compose and
+      GitHub Actions.
+    </p>
+
+    <div class="shots two">
+      <figure>
+        <div class="frame wide"><img src="assets/porchprint/new-job.png" alt="New job screen with material, detail level, scale, and quantity settings and a model upload area"></div>
+        <figcaption>Starting a job: upload, then get an estimate</figcaption>
+      </figure>
+      <figure>
+        <div class="frame wide"><img src="assets/porchprint/completed-job.png" alt="Completed job screen showing a 3D preview of a phone stand, job progress, and a delivery confirmation"></div>
+        <figcaption>Tracking a job through delivery</figcaption>
       </figure>
     </div>
   </article>
